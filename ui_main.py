@@ -31,8 +31,8 @@ class MainWindow(QMainWindow):
         btn_exportar_todo.clicked.connect(self.exportar_todo)
         main_layout.addWidget(btn_exportar_todo)
 
-        main_widget.setLayout(main_layout)
+        main_widget.setLayout(main_layout) #qu eno abre el pto excel
         self.setCentralWidget(main_widget)
 
     def exportar_todo(self):
-        exportar.exportar_todo("PYMES_APP_DATOS.xlsx")
+        exportar.exportar_todo("PYMESExcel.xlsx")
