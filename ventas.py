@@ -47,37 +47,47 @@ class VentasTab(QWidget):
         self.setLayout(layout)
 
     def guardar_venta(self):
-        producto = self.input_producto.text()
-        cantidad = int(self.input_cantidad.text())
-        precio = float(self.input_precio.text())
-        total = cantidad * precio
+        try:
+            producto = self.input_producto.text()
+            cantidad = int(self.input_cantidad.text())
+            precio = float(self.input_precio.text())
+            total = cantidad * precio
 
-        conn = db.conectar()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO ventas (producto, cantidad, precio_unitario, total) VALUES (?, ?, ?, ?)",
-                       (producto, cantidad, precio, total))
-        conn.commit()
-        conn.close()
+            if not producto or cantidad <= 0 or precio <= 0:
+                QMessageBox.warning(self, "Error", "Por favor, ingresa datos válidos.")
+                return
 
-        QMessageBox.information(self, "Éxito", "Venta registrada.")
-        self.input_producto.clear()
-        self.input_cantidad.clear()
-        self.input_precio.clear()
+            conn = db.conectar()
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO ventas (producto, cantidad, precio_unitario, total) VALUES (?, ?, ?, ?)",
+                           (producto, cantidad, precio, total))
+            conn.commit()
+            conn.close()
+
+            QMessageBox.information(self, "Éxito", "Venta registrada.")
+            self.input_producto.clear()
+            self.input_cantidad.clear()
+            self.input_precio.clear()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}")
 
     def mostrar_ventas(self):
-        conn = db.conectar()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM ventas")
-        ventas = cursor.fetchall()
-        conn.close()
+        try:
+            conn = db.conectar()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM ventas")
+            ventas = cursor.fetchall()
+            conn.close()
 
-        self.tabla.setRowCount(0)
-        total_ventas = 0
+            self.tabla.setRowCount(0)
+            total_ventas = 0
 
-        for row_number, row_data in enumerate(ventas):
-            self.tabla.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tabla.setItem(row_number, column_number, QTableWidgetItem(str(data)))
-            total_ventas += row_data[4]
+            for row_number, row_data in enumerate(ventas):
+                self.tabla.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tabla.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+                total_ventas += row_data[4]
 
-        self.label_total.setText(f"Total ventas: ${total_ventas:.2f}")
+            self.label_total.setText(f"Total ventas: ${total_ventas:.2f}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudieron mostrar las ventas: {str(e)}")
