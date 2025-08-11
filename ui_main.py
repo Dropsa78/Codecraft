@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
 
         # Título grande y centrado
-        titulo = QLabel("PYMES_APP")
+        titulo = QLabel("CODECRAFT_APP")
         titulo.setAlignment(Qt.AlignCenter)
         titulo.setStyleSheet("font-size: 32px; font-weight: bold; margin-bottom: 20px;")
         main_layout.addWidget(titulo)
@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         tabs.addTab(DevolucionesTab(), "Devoluciones")
         tabs.addTab(ProductosTab(), "Productos")
         tabs.addTab(PagosTab(), "Pagos")
+
         main_layout.addWidget(tabs)
 
         # Espaciador
@@ -46,7 +47,7 @@ class MainWindow(QMainWindow):
         btn_exportar_todo.clicked.connect(self.exportar_todo)
         main_layout.addWidget(btn_exportar_todo, alignment=Qt.AlignCenter)
 
-        main_widget.setLayout(main_layout)
+        main_widget.setLayout(main_layout) #qu eno abre el pto excel
         self.setCentralWidget(main_widget)
 
     def exportar_todo(self):

@@ -16,6 +16,39 @@ def crear_tablas():
         salario REAL NOT NULL
     )
     """)
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS ventas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        producto TEXT NOT NULL,
+        cantidad INTEGER NOT NULL,
+        precio_unitario REAL NOT NULL,
+        total REAL NOT NULL
+    )
+    """)
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS devoluciones (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        producto TEXT NOT NULL,
+        cantidad INTEGER NOT NULL,
+        motivo TEXT
+    )
+    """)
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS productos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        precio REAL NOT NULL,
+        stock INTEGER NOT NULL
+    )
+    """)
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS pagos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proveedor TEXT NOT NULL,
+        monto REAL NOT NULL,
+        fecha TEXT NOT NULL
+    )
+    """)
     conn.commit()
     conn.close()
 
